@@ -1,37 +1,41 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-const authMiddleware = require('../utils/authMiddleware');
-
-const NEWS_API_URL = 'https://newsapi.org/v2/top-headlines';
-const NEWS_API_KEY = process.env.NEWS_API_KEY;
-
+//const authMiddleware = require('../utils/authMiddleware');
 //router.get('/articles', authMiddleware, async (req, res) => {
-router.get('/articles', async (req, res) => {
 
-  const category = req.query.category || 'health';
+// Rota para buscar artigos por categoria
+router.get('/articles', async (req, res) => {
+  const categoria = req.query.categoria || 'saude';
+  const apiKey = process.env.NEWS_API_KEY;
+
+  console.log('➡️ Categoria recebida:', categoria);
+  console.log('🔑 NEWS_API_KEY:', apiKey ? '[OK]' : '[NÃO DEFINIDA]');
+
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Chave da NewsAPI não configurada.' });
+  }
 
   try {
-    const response = await axios.get(NEWS_API_URL, {
+    const response = await axios.get('https://newsapi.org/v2/everything', {
       params: {
-        q: category,
+        q: categoria,
         language: 'pt',
-        apiKey: NEWS_API_KEY,
         pageSize: 10,
-        ...(q && { q })
+        sortBy: 'publishedAt',
+        apiKey: apiKey
       }
     });
 
-    const articles = response.data.articles.map((article, index) => ({
-      id: index,
-      title: article.title,
-      source: article.source.name,
-      link: article.url
+    const artigos = response.data.articles.map((artigo) => ({
+      titulo: artigo.title,
+      descricao: artigo.description,
+      url: artigo.url
     }));
 
-    res.json(articles);
+    res.json(artigos);
   } catch (error) {
-    console.error(error);
+    console.error('❌ Erro completo ao buscar artigos:', error.response?.data || error.message);
     res.status(500).json({ error: 'Erro ao buscar artigos do NewsAPI.' });
   }
 });
