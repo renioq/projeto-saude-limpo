@@ -10,14 +10,15 @@ const Articles = () => {
 
   // Buscar artigos genéricos ao iniciar
   useEffect(() => {
-    fetchArtigosEmDestaque();
+    buscarEmDestaque();
   }, []);
 
-  const fetchArtigosEmDestaque = async () => {
+  const buscarEmDestaque = async () => {
     setLoading(true);
     try {
       const response = await articleApi.get('/articles');
       setArtigos(response.data.slice(0, 5)); // apenas 5 artigos
+      setBuscou(false); // impede a mensagem "nenhum artigo" aparecer
     } catch (error) {
       console.error('Erro ao buscar artigos em destaque:', error);
     }
