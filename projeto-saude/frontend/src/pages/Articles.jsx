@@ -71,9 +71,9 @@ const Articles = () => {
           <p>Nenhum artigo encontrado para a categoria selecionada.</p>
         )}
 
-        <ul style={{ marginTop: '20px' }}>
+        <ul className="container">
           {artigos.map((artigo, index) => (
-            <li key={index} style={{ marginBottom: '15px' }}>
+            <li key={index} className="card">
               <h3>{artigo.titulo}</h3>
               <p>{artigo.descricao}</p>
               <a href={artigo.url} target="_blank" rel="noopener noreferrer">

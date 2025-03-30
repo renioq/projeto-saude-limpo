@@ -63,9 +63,9 @@ const Catalog = () => {
           <p>Nenhuma unidade encontrada para os filtros informados.</p>
         )}
 
-        <ul style={{ marginTop: '20px' }}>
+        <ul className="container">
           {units.map((unit, index) => (
-            <li key={index} style={{ marginBottom: '15px' }}>
+            <li key={index} className="card">
               <h3>{unit.nome}</h3>
               <p><strong>Endereço:</strong> {unit.endereco}</p>
               <p><strong>Nota:</strong> {unit.nota ?? 'Sem avaliação'}</p>
