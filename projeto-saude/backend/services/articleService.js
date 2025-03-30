@@ -9,12 +9,12 @@ const NEWS_API_KEY = process.env.NEWS_API_KEY;
 //router.get('/articles', authMiddleware, async (req, res) => {
 router.get('/articles', async (req, res) => {
 
-  const { q } = req.query;
+  const category = req.query.category || 'health';
 
   try {
     const response = await axios.get(NEWS_API_URL, {
       params: {
-        category: 'health',
+        q: category,
         language: 'pt',
         apiKey: NEWS_API_KEY,
         pageSize: 10,
