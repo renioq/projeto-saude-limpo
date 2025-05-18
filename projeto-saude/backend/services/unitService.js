@@ -9,7 +9,7 @@ const GOOGLE_PLACES_DETAIL = 'https://maps.googleapis.com/maps/api/place/details
 
 const typeMap = {
   hospital: 'hospital',
-  clinica: 'clinica',
+  clinica: 'clínica',
   farmacia: 'farmácia',
   laboratorio: 'laboratório',
 };
