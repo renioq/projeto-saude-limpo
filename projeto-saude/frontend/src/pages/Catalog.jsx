@@ -67,8 +67,7 @@ const Catalog = () => {
         <button onClick={fetchUnits}>Buscar</button>
 
         {loading && <p>Carregando unidades...</p>}
-
-        {!loading && searched && units.length === 0 && (
+        {!loading && units.length === 0 && (
           <p>Nenhuma unidade encontrada para os filtros informados.</p>
         )}
 
