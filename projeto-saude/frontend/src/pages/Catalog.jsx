@@ -3,7 +3,7 @@ import unitApi from '../services/unitApi';
 import Header from '../components/Header';
 
 const Catalog = () => {
-  const [bairro, setLocation] = useState('');
+  const [bairro, setBairro] = useState('');
   const [tipo, setTipo] = useState('');
   const [units, setUnits] = useState([]);
   const [loading, setLoading] = useState(false);
