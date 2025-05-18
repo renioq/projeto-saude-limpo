@@ -9,9 +9,9 @@ const GOOGLE_PLACES_DETAIL = 'https://maps.googleapis.com/maps/api/place/details
 
 const typeMap = {
   hospital: 'hospital',
-  clinica: 'clínica',
-  farmacia: 'farmácia',
-  laboratorio: 'laboratório',
+  clinica: 'clinica',
+  farmacia: 'farmacia',
+  laboratorio: 'laboratorio',
 };
 
 //Rota principal: pesquisa básica de até 10 unidades

@@ -58,9 +58,9 @@ const Catalog = () => {
           <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
             <option value="">Selecione</option>
             <option value="hospital">Hospital</option>
-            <option value="clínica">Clínica</option>
-            <option value="farmácia">Farmácia</option>
-            <option value="laboratório">Laboratório</option>
+            <option value="clinica">Clínica</option>
+            <option value="farmacia">Farmácia</option>
+            <option value="laboratorio">Laboratório</option>
           </select>
         </div>
 
