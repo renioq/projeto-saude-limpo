@@ -3,44 +3,53 @@ import unitApi from '../services/unitApi';
 import Header from '../components/Header';
 
 const Catalog = () => {
-  const [location, setLocation] = useState('');
+  const [bairro, setLocation] = useState('');
   const [tipo, setTipo] = useState('');
   const [units, setUnits] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searched, setSearched] = useState(false);
+  const [detalhes, setDetalhes] = useState({}); //Armazena detalhes por place_id
 
   const fetchUnits = async () => {
-    if (!location || !tipo) {
+    if (!bairro || !tipo) {
       alert("Por favor, preencha os dois campos.");
       return;
     }
 
     setLoading(true);
-    setSearched(true);
     try {
       const response = await unitApi.get('/units', {
-        params: { location, tipo }
+        params: { bairro, tipo }
       });
       setUnits(response.data);
+      setDetalhes({}); // Limpa detalhes anteriores
     } catch (error) {
       console.error('Erro ao buscar unidades:', error);
     }
     setLoading(false);
   };
 
+  const buscarDetalhes = async (placeId) => {
+    try {
+      const res = await unitApi.get(`/unit-details/${placeId}`);
+      setDetalhes(prev => ({ ...prev, [placeId]: res.data }));
+    } catch (err) {
+      console.error('Erro ao buscar detalhes:', err);
+    }
+  };
+
   return (
     <>
       <Header />
       <div style={{ padding: '20px' }}>
-        <h1>Unidades de Saúde</h1>
+        <h1>Unidades de Saúde em Fortaleza</h1>
 
         <div style={{ marginBottom: '10px' }}>
-          <label>Cidade: </label>
+          <label>Bairro: </label>
           <input
             type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Digite a cidade"
+            value={bairro}
+            onChange={(e) => setBairro(e.target.value)}
+            placeholder="Digite o bairro"
           />
         </div>
 
@@ -49,15 +58,15 @@ const Catalog = () => {
           <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
             <option value="">Selecione</option>
             <option value="hospital">Hospital</option>
-            <option value="clinica">Clínica</option>
-            <option value="farmacia">Farmácia</option>
-            <option value="laboratorio">Laboratório</option>
+            <option value="clínica">Clínica</option>
+            <option value="farmácia">Farmácia</option>
+            <option value="laboratório">Laboratório</option>
           </select>
         </div>
 
         <button onClick={fetchUnits}>Buscar</button>
 
-        {loading && <p>Carregando resultados...</p>}
+        {loading && <p>Carregando unidades...</p>}
 
         {!loading && searched && units.length === 0 && (
           <p>Nenhuma unidade encontrada para os filtros informados.</p>
@@ -69,7 +78,14 @@ const Catalog = () => {
               <h3>{unit.nome}</h3>
               <p><strong>Endereço:</strong> {unit.endereco}</p>
               <p><strong>Nota:</strong> {unit.nota ?? 'Sem avaliação'}</p>
-              <p><strong>Horário:</strong> {unit.horario ?? 'Não informado'}</p>
+              <p><strong>Status:</strong> {unit.status ?? 'Não informado'}</p>
+              {!detalhes[unit.place_id] ? (
+                <button onClick={() => buscarDetalhes(unit.place_id)}>
+                  Ver mais detalhes
+                </button>
+              ) : (
+                <p><strong>Horário:</strong> {detalhes[unit.place_id].horario}</p>
+              )} 
             </li>
           ))}
         </ul>
