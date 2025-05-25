@@ -9,8 +9,6 @@ import MinhasVacinas from './pages/MinhasVacinas.jsx';
 const App = () => {
   const [logado, setLogado] = useState(!!localStorage.getItem('token'));
 
-try {
-    console.log('App está carregando...');
     return (
       <>
         <Header />
@@ -22,9 +20,6 @@ try {
         </Routes>
       </>
     );
-  } catch (e) {
-    return <p>Erro no componente: {e.message}</p>;
-  }
 };
 
 export default App;
