@@ -23,7 +23,6 @@ try {
       </BrowserRouter>
     );
   } catch (e) {
-    console.log('App está carregando...');
     return <p>Erro no componente: {e.message}</p>;
   }
 };
