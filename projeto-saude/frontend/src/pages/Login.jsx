@@ -4,6 +4,8 @@ import axios from 'axios';
 const Login = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [cadastroAtivo, setCadastroAtivo] = useState(false);
+  const [mensagem, setMensagem] = useState('');
 
   const realizarLogin = async () => {
     try {
@@ -21,22 +23,57 @@ const Login = ({ onLoginSuccess }) => {
     }
   };
 
-  return (
+const realizarCadastro = async () => {
+    try {
+      await axios.post('https://parseapi.back4app.com/users', {
+        username,
+        password
+      }, {
+        headers: {
+          'X-Parse-Application-Id': import.meta.env.VITE_BACK4APP_APP_ID,
+          'X-Parse-REST-API-Key': import.meta.env.VITE_BACK4APP_REST_KEY,
+          'Content-Type': 'application/json'
+        }
+      });
+      setMensagem('Usuário cadastrado com sucesso! Faça login.');
+      setCadastroAtivo(false);
+    } catch (error) {
+      alert('Erro ao cadastrar usuário');
+      console.error(error);
+    }
+  };
+
+return (
     <div style={{ padding: '20px' }}>
-      <h2>Login</h2>
+      <h2>{cadastroAtivo ? 'Cadastrar novo usuário' : 'Login'}</h2>
+
       <input
         type="text"
         placeholder="Usuário"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       /><br />
+
       <input
         type="password"
         placeholder="Senha"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       /><br />
-      <button onClick={realizarLogin}>Entrar</button>
+
+      {!cadastroAtivo ? (
+        <>
+          <button onClick={realizarLogin}>Entrar</button><br />
+          <small>Não tem conta? <button onClick={() => setCadastroAtivo(true)}>Cadastrar</button></small>
+        </>
+      ) : (
+        <>
+          <button onClick={realizarCadastro}>Criar Conta</button><br />
+          <small>Já tem conta? <button onClick={() => setCadastroAtivo(false)}>Fazer login</button></small>
+        </>
+      )}
+
+      {mensagem && <p style={{ color: 'green' }}>{mensagem}</p>}
     </div>
   );
 };
