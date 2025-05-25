@@ -7,7 +7,7 @@ const unitService = require('./services/unitService');
 const articleService = require('./services/articleService');
 const authRoutes = require('./services/auth');
 
-app.use(cors());
+app.use(cors({ origin: 'https://projeto-saude-vfinal-y3kx.vercel.app' }));
 app.use(express.json());
 
 app.use('/api', unitService);
