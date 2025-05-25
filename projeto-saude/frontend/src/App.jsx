@@ -10,6 +10,7 @@ const App = () => {
   //const [logado, setLogado] = useState(!!localStorage.getItem('token'));
 
 try {
+    console.log('App está carregando...');
     return (
       <BrowserRouter>
         <Header />
@@ -22,6 +23,7 @@ try {
       </BrowserRouter>
     );
   } catch (e) {
+    console.log('App está carregando...');
     return <p>Erro no componente: {e.message}</p>;
   }
 };
