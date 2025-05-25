@@ -7,19 +7,23 @@ import Login from './pages/Login.jsx';
 import MinhasVacinas from './pages/MinhasVacinas.jsx';
 
 const App = () => {
-  const [logado, setLogado] = useState(!!localStorage.getItem('token'));
+  //const [logado, setLogado] = useState(!!localStorage.getItem('token'));
 
-  return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Catalog />} />
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/login" element={<Login onLoginSuccess={() => setLogado(true)} />} />
-        <Route path="/vacinas" element={<MinhasVacinas onLogout={() => setLogado(false)} />} />
-      </Routes>
-    </BrowserRouter>
-  );
+try {
+    return (
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Catalog />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/login" element={<Login onLoginSuccess={() => setLogado(true)} />} />
+          <Route path="/vacinas" element={<MinhasVacinas onLogout={() => setLogado(false)} />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  } catch (e) {
+    return <p>Erro no componente: {e.message}</p>;
+  }
 };
 
 export default App;
