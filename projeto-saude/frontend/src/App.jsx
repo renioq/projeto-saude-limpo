@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom';
-import Header from './components/Header';
+import Header from './components/Header.jsx';
 import Catalog from './pages/Catalog.jsx';
 import Articles from './pages/Articles.jsx';
-import Login from './pages/Login';
-import MinhasVacinas from './pages/MinhasVacinas';
+import Login from './pages/Login.jsx';
+import MinhasVacinas from './pages/MinhasVacinas.jsx';
 
 const App = () => {
   const [logado, setLogado] = useState(!!localStorage.getItem('token'));
