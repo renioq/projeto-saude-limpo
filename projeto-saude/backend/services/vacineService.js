@@ -35,11 +35,11 @@ router.post('/vacinas', verifyToken, async (req, res) => {
 
   try {
     const response = await axios.post(PARSE_BASE_URL, {
-      nome, data, local, dose, userId: {
-    __type: "Pointer",
-    className: "_User",
-    objectId: req.userId
-  }
+      nome, 
+      data: { __type: "Date", iso: new Date(data).toISOString() },
+      local, 
+      dose, 
+      userId: {__type: "Pointer", className: "_User", objectId: req.userId}
     }, { headers: HEADERS });
 
     res.status(201).json({ id: response.data.objectId });
