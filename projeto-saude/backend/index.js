@@ -8,6 +8,7 @@ const articleService = require('./services/articleService');
 const authRoutes = require('./services/auth');
 const vacineService = require('./services/vacineService');
 
+// ✅ Middleware CORS global (deve vir antes de tudo)
 app.use(cors({ 
     origin: 'https://projeto-saude-vfinal-y3kx.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
