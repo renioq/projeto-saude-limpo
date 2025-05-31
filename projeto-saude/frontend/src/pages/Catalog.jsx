@@ -39,7 +39,6 @@ const Catalog = () => {
 
   return (
     <>
-      <Header />
       <div style={{ padding: '20px' }}>
         <h1>Unidades de Saúde em Fortaleza</h1>
 

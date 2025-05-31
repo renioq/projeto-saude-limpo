@@ -28,8 +28,8 @@ router.get('/vacinas', verifyToken, async (req, res) => {
 
 // POST: Cadastrar nova vacina
 router.post('/vacinas', verifyToken, async (req, res) => {
-  const { nome, data, local, dose } = req.body;
-  if (!nome || !data || !local || !dose) {
+  const { nome, data, local, dose, objetivo } = req.body;
+  if (!nome || !data || !local || !dose || !objetivo) {
     return res.status(400).json({ error: 'Campos obrigatórios: nome, data, local, dose.' });
   }
 
@@ -52,11 +52,11 @@ router.post('/vacinas', verifyToken, async (req, res) => {
 // PUT: Atualizar vacina
 router.put('/vacinas/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
-  const { nome, data, local, dose } = req.body;
+  const { nome, data, local, dose, objetivo } = req.body;
 
   try {
     await axios.put(`${PARSE_BASE_URL}/${id}`, {
-      nome, data, local, dose
+      nome, data, local, dose, objetivo
     }, { headers: HEADERS });
 
     res.json({ mensagem: 'Vacina atualizada com sucesso' });
