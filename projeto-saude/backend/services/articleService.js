@@ -1,8 +1,6 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-//const authMiddleware = require('../utils/authMiddleware');
-//router.get('/articles', authMiddleware, async (req, res) => {
 
 // Rota para buscar artigos por categoria
 router.get('/articles', async (req, res) => {

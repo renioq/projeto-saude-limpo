@@ -1,7 +1,6 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
 
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 const GOOGLE_PLACES_URL = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
@@ -15,7 +14,6 @@ const typeMap = {
 };
 
 //Rota principal: pesquisa básica de até 10 unidades
-//router.get('/units', authMiddleware, async (req, res) => {
 router.get('/units', async (req, res) => {
 
   const { bairro, tipo } = req.query;

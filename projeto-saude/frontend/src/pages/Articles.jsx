@@ -46,7 +46,6 @@ const Articles = () => {
 
   return (
     <>
-      <Header />
       <div style={{ padding: '20px' }}>
         <h1>Notícias de Saúde</h1>
 
