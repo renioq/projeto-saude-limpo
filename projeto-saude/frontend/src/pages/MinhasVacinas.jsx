@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import vacineApi from '../services/vacineApi';
 
 const MinhasVacinas = ({ onLogout }) => {
   const [vacinas, setVacinas] = useState([]);
@@ -10,19 +10,16 @@ const MinhasVacinas = ({ onLogout }) => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (!token) return;
 
-    axios.get(import.meta.env.VITE_API_BASE + '/vacinas', {
-      headers: { Authorization: 'Bearer ' + token }
-    })
-    .then(res => {
-      const vacinasOrdenadas = res.data.sort((a, b) => new Date(b.data) - new Date(a.data));
-      setVacinas(vacinasOrdenadas);
-    })
-    .catch(err => {
-      console.error(err); 
-      setErro('Erro ao carregar vacinas.');
-    });
+    vacineApi.get('/vacinas')
+      .then(res => {
+        const vacinasOrdenadas = res.data.sort((a, b) => new Date(b.data) - new Date(a.data));
+        setVacinas(vacinasOrdenadas);
+      })
+      .catch(err => {
+        console.error(err);
+        setErro('Erro ao carregar vacinas.');
+      });
   }, []);
 
   const validarCampos = () => {
@@ -36,33 +33,31 @@ const MinhasVacinas = ({ onLogout }) => {
       return;
     }
 
-    axios.post(import.meta.env.VITE_API_BASE + '/vacinas', novaVacina, {
-      headers: { Authorization: 'Bearer ' + token }
-    })
-    .then(res => {
-      setVacinas([...vacinas, { ...novaVacina, objectId: res.data.id }]);
-      setNovaVacina({ nome: '', data: '', local: '', dose: '', objetivo: '' });
-      setMensagem('Vacina cadastrada com sucesso!');
-      setErro('');
-    })
-    .catch(err => {
-      console.error(err);
-      setErro('Erro ao cadastrar vacina');
-    });
+    vacineApi.post('/vacinas', novaVacina)
+      .then(res => {
+        setVacinas([{ ...novaVacina, objectId: res.data.id }, ...vacinas]);
+        setNovaVacina({ nome: '', data: '', local: '', dose: '', objetivo: '' });
+        setMensagem('Vacina cadastrada com sucesso.');
+        setErro('');
+      })
+      .catch(err => {
+        console.error(err);
+        setErro('Erro ao cadastrar vacina.');
+      });
   };
 
   const excluirVacina = (id) => {
     if (!window.confirm('Deseja realmente excluir esta vacina?')) return;
 
-    axios.delete(import.meta.env.VITE_API_BASE + '/vacinas/' + id, {
-      headers: { Authorization: 'Bearer ' + token }
-    }).then(() => {
-      setVacinas(vacinas.filter(v => v.objectId !== id));
-      setMensagem('Vacina removida');
-    }).catch(err => {
-      console.error(err)
-      setErro('Erro ao excluir vacina.');
-    });
+    vacineApi.delete('/vacinas/' + id)
+      .then(() => {
+        setVacinas(vacinas.filter(v => v.objectId !== id));
+        setMensagem('Vacina removida.');
+      })
+      .catch(err => {
+        console.error(err);
+        setErro('Erro ao excluir vacina.');
+      });
   };
 
   if (!token) {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import articleApi from '../services/articleApi';
-import Header from '../components/Header';
 
 const Articles = () => {
   const [categoria, setCategoria] = useState('');

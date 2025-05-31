@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import unitApi from '../services/unitApi';
-import Header from '../components/Header';
 
 const Catalog = () => {
   const [bairro, setBairro] = useState('');
