@@ -14,6 +14,7 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Catalog />} />
+          <Route path="/catalog" element={<Catalog />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/login" element={<Login onLoginSuccess={() => setLogado(true)} />} />
           <Route path="/vacinas" element={<MinhasVacinas onLogout={() => setLogado(false)} />} />
