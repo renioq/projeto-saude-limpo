@@ -3,11 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const unitService = require('./services/unitService');
-const articleService = require('./services/articleService');
-const authRoutes = require('./services/auth');
-const vacineService = require('./services/vacineService');
-
 // ✅ Middleware CORS global (deve vir antes de tudo)
 app.use(cors({ 
     origin: 'https://projeto-saude-vfinal-y3kx.vercel.app',
@@ -16,6 +11,11 @@ app.use(cors({
 }));
 app.options('*', cors()); // habilita resposta para OPTIONS de qualquer rota
 app.use(express.json());
+
+const unitService = require('./services/unitService');
+const articleService = require('./services/articleService');
+const authRoutes = require('./services/auth');
+const vacineService = require('./services/vacineService');
 
 app.use('/api', unitService);
 app.use('/api', articleService);
