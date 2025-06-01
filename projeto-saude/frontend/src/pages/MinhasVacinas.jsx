@@ -80,7 +80,7 @@ const MinhasVacinas = ({ onLogout }) => {
       return;
     }
 
-    vacinaApi.put('/vacinas/' + id, vacinaEditada)
+    vacineApi.put('/vacinas/' + id, vacinaEditada)
       .then(() => {
         setMensagem('Vacina atualizada com sucesso.');
         setEditandoId(null);
