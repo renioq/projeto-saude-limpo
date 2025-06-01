@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import vacineApi from '../services/vacineApi';
-import '../index.css';
+import './styles/MinhasVacinas.css';
 
 const MinhasVacinas = ({ onLogout }) => {
   const [vacinas, setVacinas] = useState([]);
