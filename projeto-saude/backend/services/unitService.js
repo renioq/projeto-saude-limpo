@@ -41,7 +41,11 @@ router.get('/units', async (req, res) => {
       nome: place.name,
       endereco: place.formatted_address,
       nota: place.rating || 'N/A',
-      horario: place.opening_hours ? (place.opening_hours.open_now ? 'Aberto agora' : 'Fechado agora') : 'Desconhecido',
+      horario: place.opening_hours?.open_now === true
+                ? 'Aberto'
+                : place.opening_hours?.open_now === false
+                ? 'Fechado'
+                : 'Não informado',
     }));
 
     res.json(results);
