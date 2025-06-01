@@ -4,23 +4,23 @@ import '../index.css';
 
 const MinhasVacinas = ({ onLogout }) => {
   const [vacinas, setVacinas] = useState([]);
-  const [novaVacina, setNovaVacina] = useState({ nome: '', data: '', local: '', dose: '' });
+  const [novaVacina, setNovaVacina] = useState({ nome: '', data: '', local: '', dose: '', objetivo: '' });
   const [mensagem, setMensagem] = useState('');
   const [erro, setErro] = useState('');
 
   const token = localStorage.getItem('token');
 
+  const buscarVacinas = () => {
+  vacinaApi.get('/vacinas')
+    .then(res => {
+      const ordenadas = res.data.sort((a, b) => new Date(b.data) - new Date(a.data));
+      setVacinas(ordenadas);
+    })
+    .catch(() => setErro('Erro ao carregar vacinas.'));
+};
+  
   useEffect(() => {
-
-    vacineApi.get('/vacinas')
-      .then(res => {
-        const vacinasOrdenadas = res.data.sort((a, b) => new Date(b.data) - new Date(a.data));
-        setVacinas(vacinasOrdenadas);
-      })
-      .catch(err => {
-        console.error(err);
-        setErro('Erro ao carregar vacinas.');
-      });
+    if (token) buscarVacinas();
   }, []);
 
   const validarCampos = () => {
@@ -35,8 +35,8 @@ const MinhasVacinas = ({ onLogout }) => {
     }
 
     vacineApi.post('/vacinas', novaVacina)
-      .then(res => {
-        setVacinas([{ ...novaVacina, objectId: res.data.id }, ...vacinas]);
+      .then(() => {
+        buscarVacinas();
         setNovaVacina({ nome: '', data: '', local: '', dose: '', objetivo: '' });
         setMensagem('Vacina cadastrada com sucesso.');
         setErro('');
@@ -52,7 +52,7 @@ const MinhasVacinas = ({ onLogout }) => {
 
     vacineApi.delete('/vacinas/' + id)
       .then(() => {
-        setVacinas(vacinas.filter(v => v.objectId !== id));
+        buscarVacinas();
         setMensagem('Vacina removida.');
       })
       .catch(err => {
