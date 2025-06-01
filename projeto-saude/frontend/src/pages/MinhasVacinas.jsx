@@ -11,7 +11,7 @@ const MinhasVacinas = ({ onLogout }) => {
   const token = localStorage.getItem('token');
 
   const buscarVacinas = () => {
-  vacinaApi.get('/vacinas')
+  vacineApi.get('/vacinas')
     .then(res => {
       const ordenadas = res.data.sort((a, b) => new Date(b.data) - new Date(a.data));
       setVacinas(ordenadas);
