@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import articleApi from '../services/articleApi';
+import './styles/Articles.css'
 
 const Articles = () => {
   const [categoria, setCategoria] = useState('');
@@ -45,30 +46,30 @@ const Articles = () => {
 
   return (
     <>
-      <div style={{ padding: '20px' }}>
+      <div className="articles-container">
         <h1>Notícias de Saúde</h1>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label>Categoria: </label>
-          <select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-            <option value="">Selecione</option>
-            <option value="saude mental">Saúde Mental</option>
-            <option value="nutrição">Nutrição</option>
-            <option value="bem-estar">Bem-estar</option>
-            <option value="exercício">Exercício</option>
-            <option value="sono">Sono</option>
-          </select>
-          <button onClick={buscarPorCategoria} style={{ marginLeft: '10px' }}>
-            Buscar
-          </button>
+  
+        <div className="form-wrapper">
+          <div>
+            <label>Categoria: </label>
+            <select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+              <option value="">Selecione</option>
+              <option value="saude mental">Saúde Mental</option>
+              <option value="nutrição">Nutrição</option>
+              <option value="bem-estar">Bem-estar</option>
+              <option value="exercício">Exercício</option>
+              <option value="sono">Sono</option>
+            </select>
+            <button onClick={buscarPorCategoria}>Buscar</button>
+          </div>
         </div>
-
+  
         {loading && <p>Carregando artigos...</p>}
-
+  
         {!loading && buscou && artigos.length === 0 && (
           <p>Nenhum artigo encontrado para a categoria selecionada.</p>
         )}
-
+  
         <ul className="container">
           {artigos.map((artigo, index) => (
             <li key={index} className="card">
@@ -82,7 +83,7 @@ const Articles = () => {
         </ul>
       </div>
     </>
-  );
+  );  
 };
 
 export default Articles;

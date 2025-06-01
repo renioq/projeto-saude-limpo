@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './styles/Login.css';
+
 
 const Login = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
@@ -43,39 +45,40 @@ const realizarCadastro = async () => {
     }
   };
 
-return (
-    <div style={{ padding: '20px' }}>
+  return (
+    <div className="login-container">
       <h2>{cadastroAtivo ? 'Cadastrar novo usuário' : 'Login'}</h2>
-
+  
       <input
         type="text"
         placeholder="Usuário"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-      /><br />
-
+      />
+  
       <input
         type="password"
         placeholder="Senha"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-      /><br />
-
+      />
+  
       {!cadastroAtivo ? (
         <>
-          <button onClick={realizarLogin}>Entrar</button><br />
+          <button onClick={realizarLogin}>Entrar</button>
           <small>Não tem conta? <button onClick={() => setCadastroAtivo(true)}>Cadastrar</button></small>
         </>
       ) : (
         <>
-          <button onClick={realizarCadastro}>Criar Conta</button><br />
+          <button onClick={realizarCadastro}>Criar Conta</button>
           <small>Já tem conta? <button onClick={() => setCadastroAtivo(false)}>Fazer login</button></small>
         </>
       )}
-
-      {mensagem && <p style={{ color: 'green' }}>{mensagem}</p>}
+  
+      {mensagem && <p>{mensagem}</p>}
     </div>
   );
+  
 };
 
 export default Login;

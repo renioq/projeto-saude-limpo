@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import unitApi from '../services/unitApi';
+import './styles/Catalog.css';
+
 
 const Catalog = () => {
   const [bairro, setBairro] = useState('');
@@ -38,37 +40,39 @@ const Catalog = () => {
 
   return (
     <>
-      <div style={{ padding: '20px' }}>
+      <div className="catalog-container">
         <h1>Unidades de Saúde em Fortaleza</h1>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label>Bairro: </label>
-          <input
-            type="text"
-            value={bairro}
-            onChange={(e) => setBairro(e.target.value)}
-            placeholder="Digite o bairro"
-          />
+  
+        <div className="form-wrapper">
+          <div>
+            <label>Bairro: </label>
+            <input
+              type="text"
+              value={bairro}
+              onChange={(e) => setBairro(e.target.value)}
+              placeholder="Digite o bairro"
+            />
+          </div>
+  
+          <div>
+            <label>Tipo: </label>
+            <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+              <option value="">Selecione</option>
+              <option value="hospital">Hospital</option>
+              <option value="clinica">Clínica</option>
+              <option value="farmacia">Farmácia</option>
+              <option value="laboratorio">Laboratório</option>
+            </select>
+          </div>
+  
+          <button onClick={fetchUnits}>Buscar</button>
         </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label>Tipo: </label>
-          <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-            <option value="">Selecione</option>
-            <option value="hospital">Hospital</option>
-            <option value="clinica">Clínica</option>
-            <option value="farmacia">Farmácia</option>
-            <option value="laboratorio">Laboratório</option>
-          </select>
-        </div>
-
-        <button onClick={fetchUnits}>Buscar</button>
-
+  
         {loading && <p>Carregando unidades...</p>}
         {!loading && units.length === 0 && (
           <p>Nenhuma unidade encontrada para os filtros informados.</p>
         )}
-
+  
         <ul className="container">
           {units.map((unit, index) => (
             <li key={index} className="card">
@@ -82,13 +86,13 @@ const Catalog = () => {
                 </button>
               ) : (
                 <p><strong>Horário:</strong> {detalhes[unit.place_id].horario}</p>
-              )} 
+              )}
             </li>
           ))}
         </ul>
       </div>
     </>
-  );
+  );  
 };
 
 export default Catalog;
