@@ -38,7 +38,8 @@ router.post('/vacinas', verifyToken, async (req, res) => {
       nome, 
       data: { __type: "Date", iso: new Date(data).toISOString() },
       local, 
-      dose, 
+      dose,
+      objetivo, 
       userId: {__type: "Pointer", className: "_User", objectId: req.userId}
     }, { headers: HEADERS });
 
