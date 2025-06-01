@@ -85,7 +85,7 @@ const MinhasVacinas = ({ onLogout }) => {
         {vacinas.map((v) => (
           <div key={v.objectId} className="vacina-card">
             <h3>{v.nome}</h3>
-            <p><strong>Data:</strong> {new Date(v.data).toLocaleDateString()}</p>
+            <p><strong>Data:</strong> {new Date(v.data?.iso).toLocaleDateString()}</p>
             <p><strong>Local:</strong> {v.local}</p>
             <p><strong>Dose:</strong> {v.dose}</p>
             <p><strong>Objetivo:</strong> {v.objetivo}</p>
