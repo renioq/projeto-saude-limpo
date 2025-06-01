@@ -25,10 +25,10 @@ const MinhasVacinas = ({ onLogout }) => {
     if (token) buscarVacinas();
   }, []);
 
-  const validarCampos = () => {
-    const { nome, data, local, dose, objetivo } = novaVacina;
-    return nome && data && local && dose && objetivo;
-  };
+  const validarCampos = (vacina) => {
+  const { nome, data, local, dose, objetivo } = vacina;
+  return nome && data && local && dose && objetivo;
+};
 
   const adicionarVacina = () => {
     if (!validarCampos()) {
@@ -80,7 +80,15 @@ const MinhasVacinas = ({ onLogout }) => {
       return;
     }
 
-    vacineApi.put('/vacinas/' + id, vacinaEditada)
+    const vacinaFormatada = {
+    ...vacinaEditada,
+    data: {
+      __type: "Date",
+      iso: new Date(vacinaEditada.data).toISOString()
+      }
+    };
+
+    vacineApi.put('/vacinas/' + id, vacinaFormatada)
       .then(() => {
         setMensagem('Vacina atualizada com sucesso.');
         setEditandoId(null);
