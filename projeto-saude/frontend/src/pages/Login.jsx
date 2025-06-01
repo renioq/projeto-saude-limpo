@@ -19,6 +19,7 @@ const Login = ({ onLoginSuccess }) => {
       const { token } = response.data;
       localStorage.setItem('token', token);
       onLoginSuccess();
+      setMensagem('Login realizado com sucesso!');
     } catch (error) {
       alert('Login inválido');
       console.error(error);

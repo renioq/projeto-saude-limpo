@@ -103,7 +103,16 @@ const MinhasVacinas = ({ onLogout }) => {
   };
 
   if (!token) {
-    return <p>Usuário não autenticado. Faça login.</p>;
+    return (
+    <div className="vacina-container">
+      <div className="vacina-error">
+        Você precisa estar logado para acessar essa página.
+      </div>
+      <a href="/login">
+        <button className="vacina-logout">Ir para Login</button>
+      </a>
+    </div>
+  );
   }
 
   return (
