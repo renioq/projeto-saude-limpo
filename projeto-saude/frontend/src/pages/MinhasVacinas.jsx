@@ -7,6 +7,8 @@ const MinhasVacinas = ({ onLogout }) => {
   const [novaVacina, setNovaVacina] = useState({ nome: '', data: '', local: '', dose: '', objetivo: '' });
   const [mensagem, setMensagem] = useState('');
   const [erro, setErro] = useState('');
+  const [editandoId, setEditandoId] = useState(null);
+  const [vacinaEditada, setVacinaEditada] = useState(null);  
 
   const token = localStorage.getItem('token');
 
@@ -61,6 +63,37 @@ const MinhasVacinas = ({ onLogout }) => {
       });
   };
 
+  const iniciarEdicao = (vacina) => {
+    setEditandoId(vacina.objectId);
+    setVacinaEditada({
+      nome: vacina.nome,
+      data: vacina.data?.iso?.split('T')[0],
+      local: vacina.local,
+      dose: vacina.dose,
+      objetivo: vacina.objetivo
+    });
+  };
+
+  const salvarEdicao = (id) => {
+    if (!validarCampos(vacinaEditada)) {
+      setErro('Preencha todos os campos.');
+      return;
+    }
+
+    vacinaApi.put('/vacinas/' + id, vacinaEditada)
+      .then(() => {
+        setMensagem('Vacina atualizada com sucesso.');
+        setEditandoId(null);
+        buscarVacinas();
+      })
+      .catch(() => setErro('Erro ao atualizar vacina.'));
+  };
+
+  const cancelarEdicao = () => {
+    setEditandoId(null);
+    setVacinaEditada(null);
+  };
+
   if (!token) {
     return <p>Usuário não autenticado. Faça login.</p>;
   }
@@ -84,12 +117,27 @@ const MinhasVacinas = ({ onLogout }) => {
       <div className="vacina-grid">
         {vacinas.map((v) => (
           <div key={v.objectId} className="vacina-card">
-            <h3>{v.nome}</h3>
-            <p><strong>Data:</strong> {new Date(v.data?.iso).toLocaleDateString()}</p>
-            <p><strong>Local:</strong> {v.local}</p>
-            <p><strong>Dose:</strong> {v.dose}</p>
-            <p><strong>Objetivo:</strong> {v.objetivo}</p>
-            <button onClick={() => excluirVacina(v.objectId)}>Excluir</button>
+            {editandoId === v.objectId ? (
+              <>
+                <input value={vacinaEditada.nome} onChange={(e) => setVacinaEditada({ ...vacinaEditada, nome: e.target.value })} />
+                <input type="date" value={vacinaEditada.data} onChange={(e) => setVacinaEditada({ ...vacinaEditada, data: e.target.value })} />
+                <input value={vacinaEditada.local} onChange={(e) => setVacinaEditada({ ...vacinaEditada, local: e.target.value })} />
+                <input value={vacinaEditada.dose} onChange={(e) => setVacinaEditada({ ...vacinaEditada, dose: e.target.value })} />
+                <input value={vacinaEditada.objetivo} onChange={(e) => setVacinaEditada({ ...vacinaEditada, objetivo: e.target.value })} />
+                <button onClick={() => salvarEdicao(v.objectId)}>Salvar</button>
+                <button onClick={cancelarEdicao}>Cancelar</button>
+              </>
+            ) : (
+              <>
+                <h3>{v.nome}</h3>
+                <p><strong>Data:</strong> {new Date(v.data?.iso).toLocaleDateString()}</p>
+                <p><strong>Local:</strong> {v.local}</p>
+                <p><strong>Dose:</strong> {v.dose}</p>
+                <p><strong>Objetivo:</strong> {v.objetivo}</p>
+                <button onClick={() => iniciarEdicao(v)}>Editar</button>
+                <button onClick={() => excluirVacina(v.objectId)}>Excluir</button>
+              </>
+            )}
           </div>
         ))}
       </div>
