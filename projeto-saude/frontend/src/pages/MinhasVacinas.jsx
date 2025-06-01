@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import vacineApi from '../services/vacineApi';
+import './index.css';
 
 const MinhasVacinas = ({ onLogout }) => {
   const [vacinas, setVacinas] = useState([]);
@@ -65,31 +66,38 @@ const MinhasVacinas = ({ onLogout }) => {
   }
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="vacina-container">
       <h2>Minhas Vacinas</h2>
 
-      {mensagem && <p style={{ color: 'green' }}>{mensagem}</p>}
-      {erro && <p style={{ color: 'red' }}>{erro}</p>}
+      {mensagem && <div className="vacina-success">{mensagem}</div>}
+      {erro && <div className="vacina-error">{erro}</div>}
 
-      <div>
-        <input placeholder="Nome" value={novaVacina.nome} onChange={(e) => setNovaVacina({ ...novaVacina, nome: e.target.value })} />
-        <input type="date" value={novaVacina.data} onChange={(e) => setNovaVacina({ ...novaVacina, data: e.target.value })} />
-        <input placeholder="Local" value={novaVacina.local} onChange={(e) => setNovaVacina({ ...novaVacina, local: e.target.value })} />
-        <input placeholder="Dose" value={novaVacina.dose} onChange={(e) => setNovaVacina({ ...novaVacina, dose: e.target.value })} />
-        <input placeholder="Objetivo (doença tratada)" value={novaVacina.objetivo} onChange={(e) => setNovaVacina({ ...novaVacina, objetivo: e.target.value })} />
+      <div className="vacina-form">
+        <input placeholder="Nome" value={novaVacina.nome} onChange={e => setNovaVacina({ ...novaVacina, nome: e.target.value })} />
+        <input type="date" value={novaVacina.data} onChange={e => setNovaVacina({ ...novaVacina, data: e.target.value })} />
+        <input placeholder="Local" value={novaVacina.local} onChange={e => setNovaVacina({ ...novaVacina, local: e.target.value })} />
+        <input placeholder="Dose" value={novaVacina.dose} onChange={e => setNovaVacina({ ...novaVacina, dose: e.target.value })} />
+        <input placeholder="Objetivo (doença tratada)" value={novaVacina.objetivo} onChange={e => setNovaVacina({ ...novaVacina, objetivo: e.target.value })} />
         <button onClick={adicionarVacina}>Cadastrar</button>
       </div>
 
-      <ul>
+      <div className="vacina-grid">
         {vacinas.map((v) => (
-          <li key={v.objectId}>
-            <strong>{v.nome}</strong> - {new Date(v.data).toLocaleDateString()} - {v.local} - {v.dose} - {v.objetivo}
+          <div key={v.objectId} className="vacina-card">
+            <h3>{v.nome}</h3>
+            <p><strong>Data:</strong> {new Date(v.data).toLocaleDateString()}</p>
+            <p><strong>Local:</strong> {v.local}</p>
+            <p><strong>Dose:</strong> {v.dose}</p>
+            <p><strong>Objetivo:</strong> {v.objetivo}</p>
             <button onClick={() => excluirVacina(v.objectId)}>Excluir</button>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
 
-      <button onClick={() => { localStorage.removeItem('token'); onLogout(); }}>
+      <button className="vacina-logout" onClick={() => {
+        localStorage.removeItem('token');
+        onLogout();
+      }}>
         Sair
       </button>
     </div>
