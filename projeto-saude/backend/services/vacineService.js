@@ -16,7 +16,13 @@ router.get('/vacinas', verifyToken, async (req, res) => {
     const response = await axios.get(PARSE_BASE_URL, {
       headers: HEADERS,
       params: {
-        where: JSON.stringify({ userId: req.userId })
+        where: JSON.stringify({
+          userId: {
+            __type: 'Pointer',
+            className: '_User',
+            objectId: req.userId
+          }
+        })
       }
     });
     res.json(response.data.results);
