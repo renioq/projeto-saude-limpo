@@ -43,11 +43,10 @@ const Catalog = () => {
     <div className="catalog-container">
       <h1>Unidades de Saúde em Fortaleza</h1>
 
-      // Formulário de busca 
       <div className="form-wrapper">
         <div>
           <label>Bairro: </label>
-          <input type="text" value={bairro} onChange={(e) => setBairro(e.target.value)} />
+          <input type="text" value={bairro} onChange={(e) => setBairro(e.target.value)} placeholder="Digite o bairro"/>
         </div>
 
         <div>
@@ -67,7 +66,6 @@ const Catalog = () => {
       {loading && <p>Carregando unidades...</p>}
       {!loading && units.length === 0 && <p>Nenhuma unidade encontrada.</p>}
 
-      // Lista de resultados 
       <ul className="container">
         {units.map((unit, index) => (
           <li key={index} className="card">

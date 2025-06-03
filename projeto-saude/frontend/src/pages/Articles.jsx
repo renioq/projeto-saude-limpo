@@ -51,7 +51,6 @@ const Articles = () => {
     <div className="articles-container">
       <h1>Notícias de Saúde</h1>
 
-      // Formulário para filtro por categoria 
       <div className="form-wrapper">
         <div>
           <label>Categoria: </label>
@@ -67,13 +66,11 @@ const Articles = () => {
         </div>
       </div>
 
-      // Feedback de carregamento ou ausência de resultados 
       {loading && <p>Carregando artigos...</p>}
       {!loading && buscou && artigos.length === 0 && (
         <p>Nenhum artigo encontrado para a categoria selecionada.</p>
       )}
 
-      // Lista de artigos 
       <ul className="container">
         {artigos.map((artigo, index) => (
           <li key={index} className="card">

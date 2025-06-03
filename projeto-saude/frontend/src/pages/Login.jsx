@@ -51,7 +51,7 @@ const Login = ({ onLoginSuccess }) => {
     <div className="login-container">
       <h2>{cadastroAtivo ? 'Cadastrar novo usuário' : 'Login'}</h2>
 
-      <input placeholder="Usuário" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input type="text" placeholder="Usuário" value={username} onChange={(e) => setUsername(e.target.value)} />
       <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
 
       {!cadastroAtivo ? (

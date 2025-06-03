@@ -13,7 +13,7 @@ const MinhasVacinas = ({ onLogout }) => {
 
   const token = localStorage.getItem('token'); // Token JWT para autenticação
 
-  // 🔍 Busca vacinas do usuário autenticado
+  // Busca vacinas do usuário autenticado
   const buscarVacinas = () => {
     vacineApi.get('/vacinas')
       .then(res => {
@@ -28,13 +28,13 @@ const MinhasVacinas = ({ onLogout }) => {
     if (token) buscarVacinas();
   }, []);
 
-  // 🛡️ Valida se todos os campos obrigatórios foram preenchidos
-  const validarCampos = (vacina = novaVacina) => {
+  // Valida se todos os campos obrigatórios foram preenchidos
+  const validarCampos = (vacina) => {
     const { nome, data, local, dose, objetivo } = vacina;
     return nome && data && local && dose && objetivo;
   };
 
-  // ➕ Cadastra nova vacina
+  // Cadastra nova vacina
   const adicionarVacina = () => {
     if (!validarCampos()) {
       setErro('Preencha todos os campos.');
@@ -48,10 +48,13 @@ const MinhasVacinas = ({ onLogout }) => {
         setMensagem('Vacina cadastrada com sucesso.');
         setErro('');
       })
-      .catch(() => setErro('Erro ao cadastrar vacina.'));
+      .catch(err => {
+        console.error(err);
+        setErro('Erro ao cadastrar vacina.');
+      });
   };
 
-  // 🗑️ Exclui vacina confirmada pelo usuário
+  // Exclui vacina confirmada pelo usuário
   const excluirVacina = (id) => {
     if (!window.confirm('Deseja realmente excluir esta vacina?')) return;
 
@@ -60,10 +63,13 @@ const MinhasVacinas = ({ onLogout }) => {
         buscarVacinas();
         setMensagem('Vacina removida.');
       })
-      .catch(() => setErro('Erro ao excluir vacina.'));
+      .catch(err => {
+        console.error(err);
+        setErro('Erro ao excluir vacina.');
+      });
   };
 
-  // ✏️ Inicia o processo de edição de uma vacina
+  // Inicia o processo de edição de uma vacina
   const iniciarEdicao = (vacina) => {
     setEditandoId(vacina.objectId);
     setVacinaEditada({
@@ -75,7 +81,7 @@ const MinhasVacinas = ({ onLogout }) => {
     });
   };
 
-  // 💾 Salva edição no servidor
+  // Salva edição no servidor
   const salvarEdicao = (id) => {
     if (!validarCampos(vacinaEditada)) {
       setErro('Preencha todos os campos.');
@@ -104,7 +110,7 @@ const MinhasVacinas = ({ onLogout }) => {
     setVacinaEditada(null);
   };
 
-  // 🔐 Se o token estiver ausente, exibe tela de bloqueio
+  // Se o token estiver ausente, exibe tela de bloqueio
   if (!token) {
     return (
       <div className="vacina-container">
@@ -121,12 +127,10 @@ const MinhasVacinas = ({ onLogout }) => {
   return (
     <div className="vacina-container">
       <h2>Minhas Vacinas</h2>
-
-      // Mensagens de sucesso e erro 
+ 
       {mensagem && <div className="vacina-success">{mensagem}</div>}
       {erro && <div className="vacina-error">{erro}</div>}
 
-      // Formulário de nova vacina 
       <div className="vacina-form">
         <input placeholder="Nome" value={novaVacina.nome} onChange={e => setNovaVacina({ ...novaVacina, nome: e.target.value })} />
         <input type="date" value={novaVacina.data} onChange={e => setNovaVacina({ ...novaVacina, data: e.target.value })} />
@@ -136,11 +140,9 @@ const MinhasVacinas = ({ onLogout }) => {
         <button onClick={adicionarVacina}>Cadastrar</button>
       </div>
 
-      // Lista de vacinas existentes 
       <div className="vacina-grid">
         {vacinas.map((v) => (
           <div key={v.objectId} className="vacina-card">
-            // Modo de edição 
             {editandoId === v.objectId ? (
               <>
                 <input value={vacinaEditada.nome} onChange={(e) => setVacinaEditada({ ...vacinaEditada, nome: e.target.value })} />
@@ -166,7 +168,6 @@ const MinhasVacinas = ({ onLogout }) => {
         ))}
       </div>
 
-      // Botão de logout 
       <button className="vacina-logout" onClick={() => {
         localStorage.removeItem('token');
         onLogout();
