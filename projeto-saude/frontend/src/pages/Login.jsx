@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './styles/Login.css';
 
-
 const Login = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [cadastroAtivo, setCadastroAtivo] = useState(false);
   const [mensagem, setMensagem] = useState('');
 
+  // Login com a API (gera token JWT)
   const realizarLogin = async () => {
     try {
       const response = await axios.post(import.meta.env.VITE_API_BASE + '/login', {
@@ -26,7 +26,8 @@ const Login = ({ onLoginSuccess }) => {
     }
   };
 
-const realizarCadastro = async () => {
+  // Cadastro de novo usuário (Back4App)
+  const realizarCadastro = async () => {
     try {
       await axios.post('https://parseapi.back4app.com/users', {
         username,
@@ -49,21 +50,10 @@ const realizarCadastro = async () => {
   return (
     <div className="login-container">
       <h2>{cadastroAtivo ? 'Cadastrar novo usuário' : 'Login'}</h2>
-  
-      <input
-        type="text"
-        placeholder="Usuário"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-  
-      <input
-        type="password"
-        placeholder="Senha"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-  
+
+      <input placeholder="Usuário" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+
       {!cadastroAtivo ? (
         <>
           <button onClick={realizarLogin}>Entrar</button>
@@ -75,11 +65,10 @@ const realizarCadastro = async () => {
           <small>Já tem conta? <button onClick={() => setCadastroAtivo(false)}>Fazer login</button></small>
         </>
       )}
-  
+
       {mensagem && <p>{mensagem}</p>}
     </div>
   );
-  
 };
 
 export default Login;
